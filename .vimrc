@@ -19,6 +19,7 @@ Bundle 'laoyang945/snipmate.vim'
 Bundle 'mhinz/vim-startify'
 Bundle 'powerline/powerline'
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'VOom'
 call vundle#end()
 
 set diffexpr=MyDiff()
