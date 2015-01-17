@@ -18,7 +18,9 @@ Bundle 'vim-latex/vim-latex'
 Bundle 'laoyang945/snipmate.vim'
 Bundle 'mhinz/vim-startify'
 Bundle 'powerline/powerline'
+if has('unix')
 Bundle 'Valloric/YouCompleteMe'
+endif
 Bundle 'VOom'
 call vundle#end()
 
