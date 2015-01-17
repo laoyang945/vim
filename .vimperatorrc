@@ -1,0 +1,83 @@
+" vim: set filetype=vim : 
+""Key Mappings
+nnoremap j 5j
+nnoremap k 5k
+noremap I <C-o>
+noremap O <C-i>
+nmap h :tabNext<CR>
+nmap l :tabnext<CR>
+nmap s F
+nmap ,h :ba<CR>
+nmap ,l :fo<CR>
+"search selected
+map m Y<Nop>P
+"select all
+inoremap <C-a> <Ins><C-a><Ins>
+"Zotero Quick Add
+nmap <C-q> :js ZoteroPane.addItemFromPage();<CR>
+nmap <S-q> :js Zotero_Browser.scrapeThisPage();<CR>
+nmap <C-S-q> :js ZoteroPane.newNote(false,false,getBrowserSelection(),window.location.href);<CR>
+nmap <C-A-x> :js ZoteroPane.openNoteWindow();<CR>
+noremap = +
+"add to instapaper
+nmap <F3> :bmli<CR>
+nmap C :copy<CR><Esc>
+nmap <S-s> :emenu Tools.Sync Now<CR>
+"avoiding jump to next element in editing
+"inoremap <Tab> <Nop>
+"inoremap <S-Tab> <Nop>
+"inoremap <C-Tab> <Tab>
+noremap e :emenu Tools.Clearly<CR>
+"Settings
+set nextpattern+=\s*下一章|下一页|下一頁|下一张|下一篇|下页|后页\s*,^\bnext\b,\\bnext\\b,^>$,^(>>|»)$,^(>|»),(>|»)$,\\bmore\\b
+set previouspattern+=\s*上一章|上一页|上一頁|上一张|上一篇|上页|前页\s*,^\bprev|previous\b,\\bprev|previous\\b,^<$,^(<<|«)$,^(<|«),(<|«)$
+set hintchars=hjklasdf
+set hintinputs=label
+set complete=l
+set maxitems=5
+set autocomplete=false
+set gui=nonavigation,noaddons
+hi Normal -append font-size: 12pt;
+hi Hint::after -append font-size: 12pt;
+
+js<<EOF
+var sys=window.navigator.platform;
+if (sys.substring().toLowerCase()=="macintel")
+	{
+	liberator.execute("set editor='bash -lc \"mvim -f \$*\" mvim '");
+	liberator.execute("set runtimepath=~/.vimperator")
+	}
+EOF
+
+"PassThrough gmail/greader/twitter/workflowy
+"need feedsomekeys_3.js
+command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+"lazy fmaps -u='mail\.google\.com/mail' c / <Tab> j k n p o u e I x s r a # [ ] ? gi gs gt gd ga gc gg,<Home> G,<End>
+lazy fmaps -u='mail\.google\.com/mail/u/\d/.*' c / <Tab> j n k p n j p k o u e I x s r a # [ ] ? gi gs gt gd ga gc gg,<Home> G,<End> <C-CR> <CR>
+lazy fmaps -u='www\.google\.com/reader' -events=vkeypress x,f e o j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
+lazy fmaps -u='https?://(www\.)?digg\.com/reader' -events=vkeydown j k n p o r 1 2 J K O X A a m e s v ?
+lazy fmaps -u='https?://(www\.)?feedly\.com/' -events=keypress j k n p o v r <S-a> <S-j> <S-k> gh ga gg gI a m x e s b c v ?
+"lazy fmaps -u='https?://(www\.)?twitter\.com' j k / . ? x,l 
+lazy fmaps -u='https?://(www\.)?twitter\.com.*' -events=keypress m n gf gr gc gd gp gh gm gu <C-r>,r <C-t>,t v,f
+lazy fmaps -u='https?://(www\.)?twitter\.com.*' -events=keypress j k / . ? x,l 
+lazy fmaps -u='https?://(www\.)?workflowy\.com/.*' -events=keydown /,<Esc>
+lazy fmaps -u='https?://plus\.google\.com/.*' <Left> <Right> j k n o r .,l p <Esc> ? /
+"Commands
+command noimg set! permissions.default.image=2
+command ysimg set! permissions.default.image=1
+command nojs set! javascript.enabled=false
+command ysjs set! javascript.enabled=true
+
+"google plus
+"let g:gplus_commando_map_next            = "j"
+"let g:gplus_commando_map_prev            = "k"
+"let g:gplus_commando_map_share           = "s"
+"let g:gplus_commando_map_plusone         = "p"
+"let g:gplus_commando_map_comment         = "c"
+"let g:gplus_commando_map_post            = "C"
+"let g:gplus_commando_map_yank            = "y"
+"let g:gplus_commando_map_notification    = "n"
+"let g:gplus_commando_map_submit          = "<C-CR>"
+"let g:gplus_commando_map_cancel          = "<Esc>"
+"let g:gplus_commando_map_unfold          = "e"
+"let g:gplus_commando_map_menu            = "m"
