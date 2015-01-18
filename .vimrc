@@ -1,27 +1,27 @@
 ﻿" vim: set ft=vim:
 set runtimepath+=~/.vim
-"set runtimepath+=~/.vim/bundle/snipmate/after
 set nocompatible
 source $VIMRUNTIME/vimrc_example.vim
-"runtime bundle/vim-pathogen/autoload/pathogen.vim
-"call pathogen#infect()
-"call pathogen#helptags()
 
 filetype off
-" 此处规定Vundle的路径
 set rtp+=~/.vim/bundle/vundle/
-"runtime bundle/vundle/autoload/vundle.vim
-"call vundle#rc('~/.vim/bundle/')
 call vundle#begin()
-Bundle 'gmarik/vundle'
-Bundle 'vim-latex/vim-latex'
-Bundle 'laoyang945/snipmate.vim'
-Bundle 'mhinz/vim-startify'
-Bundle 'powerline/powerline'
-if has('unix')
-Bundle 'Valloric/YouCompleteMe'
+Plugin 'gmarik/vundle'
+Plugin 'vim-latex/vim-latex'
+Plugin 'laoyang945/snipmate.vim'
+Plugin 'mhinz/vim-startify'
+Plugin 'powerline/powerline'
+Plugin 'Conque-Shell'
+
+set runtimepath+=~/.vim/bundle/snipmate/after
+
+if has("win32")||has("win64")
+		Plugin	'file://~/.vim/bundle/YouCompleteMe',{'pinned':1}
 endif
-Bundle 'VOom'
+if has('unix')
+		Plugin 'Valloric/YouCompleteMe'
+endif
+Plugin 'VOom'
 call vundle#end()
 
 set diffexpr=MyDiff()
@@ -138,3 +138,4 @@ let generate_tags=1
 let g:ctags_statusline=1
 let Tlist_Use_Horiz_Window=0
 let g:Tex_EchoBibFields = 0
+"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party'
