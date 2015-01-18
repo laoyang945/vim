@@ -130,6 +130,7 @@ if has("unix")
 	let g:Tex_ViewRule_pdf="Skim"
 	set guifont=Monaco:h20
 	set noimd
+	let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 endif
 
 let g:Tex_MultipleCompileFormats = 'pdf,dvi'
