@@ -45,7 +45,7 @@ var sys=window.navigator.platform;
 if (sys.substring().toLowerCase()=="macintel")
 	{
 	liberator.execute("set editor='bash -lc \"mvim -f \$*\" mvim '");
-	liberator.execute("set runtimepath=~/.vimperator")
+	liberator.execute("set runtimepath=~/vimperator")
 	}
 EOF
 
