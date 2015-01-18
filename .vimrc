@@ -12,8 +12,8 @@ Plugin 'laoyang945/snipmate.vim'
 Plugin 'mhinz/vim-startify'
 Plugin 'powerline/powerline'
 Plugin 'Conque-Shell'
-
-set runtimepath+=~/.vim/bundle/snipmate/after
+Plugin 'Raimondi/delimitMate'
+Plugin 'VOom'
 
 if has("win32")||has("win64")
 		Plugin	'file://~/.vim/bundle/YouCompleteMe',{'pinned':1}
@@ -21,9 +21,9 @@ endif
 if has('unix')
 		Plugin 'Valloric/YouCompleteMe'
 endif
-Plugin 'VOom'
 call vundle#end()
 
+set runtimepath+=~/.vim/bundle/snipmate.vim/after
 set diffexpr=MyDiff()
 function MyDiff()
   let opt = '-a --binary '
@@ -138,4 +138,7 @@ let generate_tags=1
 let g:ctags_statusline=1
 let Tlist_Use_Horiz_Window=0
 let g:Tex_EchoBibFields = 0
-"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party'
+let g:ycm_confirm_extra_conf = 0
+set completeopt-=preview  
+"let g:ycm_key_invoke_completion = '<C-;>'
+"let g:ycm_key_list_select_completion = ['<C-n>','<Down>']
