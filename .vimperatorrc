@@ -20,7 +20,7 @@ nmap <C-S-q> :js ZoteroPane.newNote(false,false,getBrowserSelection(),window.loc
 nmap <C-A-x> :js ZoteroPane.openNoteWindow();<CR>
 noremap = +
 "add to instapaper
-nmap <F3> :bmli<CR>
+nmap <F3> :ril<CR>
 nmap C :copy<CR><Esc>
 nmap <S-s> :emenu Tools.Sync Now<CR>
 "avoiding jump to next element in editing
