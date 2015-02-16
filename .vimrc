@@ -3,6 +3,7 @@ set runtimepath+=~/.vim
 set nocompatible
 source $VIMRUNTIME/vimrc_example.vim
 
+
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
@@ -10,10 +11,12 @@ Plugin 'gmarik/vundle'
 Plugin 'vim-latex/vim-latex'
 Plugin 'laoyang945/snipmate.vim'
 Plugin 'mhinz/vim-startify'
-Plugin 'powerline/powerline'
+Plugin 'bling/vim-airline'
 Plugin 'Conque-Shell'
 Plugin 'Raimondi/delimitMate'
 Plugin 'VOom'
+Plugin 'EasyMotion'
+Plugin 'tpope/vim-fugitive'
 
 if has("win32")||has("win64")
 		Plugin	'file://~/.vim/bundle/YouCompleteMe',{'pinned':1}
