@@ -54,6 +54,8 @@ EOF
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 "lazy fmaps -u='mail\.google\.com/mail' c / <Tab> j k n p o u e I x s r a # [ ] ? gi gs gt gd ga gc gg,<Home> G,<End>
 lazy fmaps -u='mail\.google\.com/mail/u/\d/.*' c / <Tab> j n k p n j p k o u e I x s r a # [ ] ? gi gs gt gd ga gc gg,<Home> G,<End> <C-CR> <CR>
+lazy fmaps -u='inbox\.google\.com/' -events=keypress,keydown,vkeypress,vkeydown c / i v,t z o u e y x [ ] <S-p> a <S-a> r <S-r> f # ! m . <Esc> <C-CR> <CR> <Tab>
+lazy fmaps -u='inbox\.google\.com/' -events=vkeypress n p j k 
 lazy fmaps -u='www\.google\.com/reader' -events=vkeypress x,f e o j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
 lazy fmaps -u='https?://(www\.)?digg\.com/reader' -events=vkeydown j k n p o r 1 2 J K O X A a m e s v ?
 lazy fmaps -u='https?://(www\.)?feedly\.com/' -events=keypress j k n p o v r <S-a> <S-j> <S-k> gh ga gg gI a m x e s b c v ?
