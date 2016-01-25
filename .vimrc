@@ -12,11 +12,17 @@ Plugin 'vim-latex/vim-latex'
 Plugin 'laoyang945/snipmate.vim'
 Plugin 'mhinz/vim-startify'
 Plugin 'bling/vim-airline'
-Plugin 'Conque-Shell'
+Plugin 'vim-scripts/Conque-Shell'
+Plugin 'vim-scripts/utl.vim'
 Plugin 'Raimondi/delimitMate'
-Plugin 'VOom'
-Plugin 'EasyMotion'
+Plugin 'vim-voom/VOom'
+Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdtree'
+Plugin 'yegappan/grep'
+Plugin 'luochen1990/rainbow'
+Plugin 'vim-scripts/rainbow_csv.vim'
+Plugin 'godlygeek/tabular'
 
 if has("win32")||has("win64")
 		Plugin	'file://~/.vim/bundle/YouCompleteMe',{'pinned':1}
@@ -70,6 +76,7 @@ syntax on
 au BufEnter *.txt setlocal ft=txt
 set autoread
 set autowrite
+set autochdir
 au BufLeave,FocusLost * call WhenILeave()
 
 function WhenILeave()
@@ -83,6 +90,7 @@ endfunction
 "autocmd! InsertEnter * set noimdisable
 "
 set number
+set lines=999 columns=999
 set linebreak
 set nospell
 set clipboard=unnamed "The * register is the default register.
@@ -104,7 +112,7 @@ nmap <space> <C-f>
 nmap <S-space> <C-b>
 nmap <down> <C-E>
 nmap <up> <C-Y>
-nmap ti <Esc>i<C-r>=strftime("%c")<CR><Esc><Esc>
+nmap ti "=strftime("%c")<CR>P
 nmap wl <c-w>l
 nmap wk <c-w>k
 nmap wj <c-w>j
@@ -112,6 +120,9 @@ nmap wh <c-w>h
 nmap tl gt
 nmap th gT
 noremap <C-l> :nohlsearch<CR><C-l>
+nmap <F2> :Startify<CR>
+nmap <F3> :NERDTreeToggle<CR>
+nmap <F4> :let @+=expand("%")<CR>
 let mapleader=","
 "for plugins
 filetype plugin on
@@ -119,7 +130,6 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 filetype indent on
 set undofile
-
 let g:Tex_Flavor='latex'
 let g:Tex_DefaultTargetFormat = 'pdf'
 "au FileType tex :TTarget pdf
@@ -142,6 +152,7 @@ let g:ctags_statusline=1
 let Tlist_Use_Horiz_Window=0
 let g:Tex_EchoBibFields = 0
 let g:ycm_confirm_extra_conf = 0
+let g:rainbow_active=1
 set completeopt-=preview  
 "let g:ycm_key_invoke_completion = '<C-;>'
 let g:ycm_key_list_select_completion = ['<C-n>','<Down>']

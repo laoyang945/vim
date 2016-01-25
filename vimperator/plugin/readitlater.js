@@ -151,7 +151,7 @@ let PLUGIN_INFO = xml`
 			new Command(["open","o"], "Open url in new tab from RIL list.",
 				function (args) {
 					liberator.open(args, liberator.NEW_BACKGROUND_TAB);
-					if(liberator.globalVariables.readitlater_open_as_read == 1) markAsRead(args);
+					if(liberator.globalVariables.readitlater_open_as_read == 1 && !args.bang) markAsRead(args);
 				},{
 					bang: true,
 					completer : listCompleter,
@@ -277,11 +277,16 @@ let PLUGIN_INFO = xml`
 
 		}, // }}}
 
+		getLogins : function() {
+			let manager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);
+			return manager.findLogins({},"https://getpocket.com","",null).concat(
+			       manager.findLogins({}, "http://getpocket.com","",null))
+		},
+
 		get : function(state, callback){ // {{{
 		// document => http://readitlaterlist.com/api/docs#get
 
-		let manager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);
-		let logins = manager.findLogins({},"http://readitlaterlist.com","",null);
+		let logins = this.getLogins();
 
 		let req = new libly.Request(
 			"https://readitlaterlist.com/v2/get" , // url
@@ -316,8 +321,7 @@ let PLUGIN_INFO = xml`
 
 		add : function(url,title,callback){ // {{{
 
-		let manager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);
-		let logins = manager.findLogins({},"http://readitlaterlist.com","",null);
+		let logins = this.getLogins();
 		let req = new libly.Request(
 			"https://readitlaterlist.com/v2/add" , // url
 			null, // headers
