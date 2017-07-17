@@ -34,7 +34,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 // INFO {{{
 let INFO = xml`
-  <plugin name="X-Hint" version="1.1.3"
+  <plugin name="X-Hint" version="1.1.4"
           href="http://github.com/vimpr/vimperator-plugins/blob/master/x-hint.js"
           summary="Show the hints with given XPath."
           lang="en-US"
@@ -66,7 +66,7 @@ let INFO = xml`
       </description>
     </item>
   </plugin>
-  <plugin name="X-Hint" version="1.1.3"
+  <plugin name="X-Hint" version="1.1.4"
           href="http://github.com/vimpr/vimperator-plugins/blob/master/x-hint.js"
           summary="Show the hints with given XPath."
           lang="ja"
@@ -115,7 +115,7 @@ let INFO = xml`
     last = {};
   }
 
-  plugins.libly.$U.around(
+  liberator.plugins.libly.$U.around(
     hints,
     'show',
     function (next, [minor, filter, win]) {
@@ -137,7 +137,7 @@ let INFO = xml`
     true
   );
 
-  plugins.libly.$U.around(
+  liberator.plugins.libly.$U.around(
     hints,
     'hide',
     function (next, [minor, filter, win]) {
@@ -166,7 +166,8 @@ let INFO = xml`
     true
   );
 
-  let (hintModeText = 'x-hint-do', js = null) {
+  (function () {
+    let hintModeText = 'x-hint-do', js = null;
     hints.addMode(
       hintModeText,
       'X-Hint DO',
@@ -196,7 +197,7 @@ let INFO = xml`
       },
       true
     );
-  }
+  })();
 
 })();
 

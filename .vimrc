@@ -1,15 +1,18 @@
-﻿" vim: set ft=vim:
+" vim: set ft=vim:
 set runtimepath+=~/.vim
 set nocompatible
 source $VIMRUNTIME/vimrc_example.vim
 
 
 filetype off
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/vundle.vim/
 call vundle#begin()
-Plugin 'gmarik/vundle'
+Plugin 'VundleVim/vundle.vim'
 Plugin 'vim-latex/vim-latex'
-Plugin 'laoyang945/snipmate.vim'
+"Plugin 'laoyang945/snipmate.vim'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
 Plugin 'mhinz/vim-startify'
 Plugin 'bling/vim-airline'
 Plugin 'vim-scripts/Conque-Shell'
@@ -19,43 +22,53 @@ Plugin 'vim-voom/VOom'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
-Plugin 'yegappan/grep'
-Plugin 'luochen1990/rainbow'
+Plugin 'vimwiki/vimwiki'
+Plugin 'suan/vim-instant-markdown'
+"Plugin 'yegappan/grep'
+"Plugin 'luochen1990/rainbow'
 Plugin 'vim-scripts/rainbow_csv.vim'
 Plugin 'godlygeek/tabular'
+"Plugin 'dhruvasagar/vim-table-mode'
+"Plugin 'vim-scripts/SQLUtilities'
+"Plugin 'vim-scripts/Align'
+Plugin 'chrisbra/vim-sh-indent'
 
-if has("win32")||has("win64")
-		Plugin	'file://~/.vim/bundle/YouCompleteMe',{'pinned':1}
-endif
-if has('unix')
-		Plugin 'Valloric/YouCompleteMe'
-endif
+"if has("win32")||has("win64")
+"		Plugin	'file://~/.vim/bundle/YouCompleteMe',{'pinned':1}
+"endif
+"if has('unix')
+"		Plugin 'Valloric/YouCompleteMe'
+"endif
 call vundle#end()
+
+if !has("gui_running")
+		let g:startify_disable_at_vimenter = 1
+endif
 
 set runtimepath+=~/.vim/bundle/snipmate.vim/after
 set diffexpr=MyDiff()
 function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  let eq = ''
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
-      let cmd = '""' . $VIMRUNTIME . '\diff"'
-      let eq = '"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+		let opt = '-a --binary '
+		if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+		if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+		let arg1 = v:fname_in
+		if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+		let arg2 = v:fname_new
+		if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+		let arg3 = v:fname_out
+		if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+		let eq = ''
+		if $VIMRUNTIME =~ ' '
+				if &sh =~ '\<cmd'
+						let cmd = '""' . $VIMRUNTIME . '\diff"'
+						let eq = '"'
+				else
+						let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+				endif
+		else
+				let cmd = $VIMRUNTIME . '\diff'
+		endif
+		silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
 colorscheme desert
 
@@ -80,8 +93,8 @@ set autochdir
 au BufLeave,FocusLost * call WhenILeave()
 
 function WhenILeave()
-	call feedkeys("\e")
-	silent! wa
+		call feedkeys("\e")
+		silent! wa
 endfunction
 
 "the 3 lines below are for special input methods
@@ -90,11 +103,12 @@ endfunction
 "autocmd! InsertEnter * set noimdisable
 "
 set number
-set lines=999 columns=999
+
+
 set linebreak
 set nospell
 set clipboard=unnamed "The * register is the default register.
-set wrap
+"set wrap
 set tabstop=2
 set softtabstop=2
 set laststatus=2
@@ -104,10 +118,12 @@ set writebackup " turn on write backup
 set backupdir=~/Documents/backup
 set encoding=utf-8
 set go=none
+"set tw=0
 set foldmethod=syntax
 au BufRead,BufNewFile vimperator-*.tmp setlocal ft=html
 noremap j gj
 noremap k gk
+nmap <C-u> :!~/sync_files.sh upload<CR>
 nmap <space> <C-f>
 nmap <S-space> <C-b>
 nmap <down> <C-E>
@@ -134,17 +150,24 @@ let g:Tex_Flavor='latex'
 let g:Tex_DefaultTargetFormat = 'pdf'
 "au FileType tex :TTarget pdf
 if has("win32")||has("win64")
-	let g:Tex_CompileRule_pdf = 'xelatex --synctex=-1 -src-specials -interaction=nonstopmode $*'
-	let g:Tex_ViewRule_pdf = 'SumatraPDF'
+		let g:Tex_CompileRule_pdf = 'xelatex --synctex=-1 -src-specials -interaction=nonstopmode $*'
+		let g:Tex_ViewRule_pdf = 'SumatraPDF'
 endif
 
 if has("unix")
-	let g:Tex_CompileRule_pdf = 'xelatex --synctex=-1 -interaction=nonstopmode $*'
-	let g:Tex_ViewRule_pdf="Skim"
-	set guifont=Monaco:h20
-	set noimd
-	let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+		let g:Tex_CompileRule_pdf = 'xelatex --synctex=-1 -interaction=nonstopmode $*'
+		let g:Tex_ViewRule_pdf="Skim"
+		set guifont=Monaco:h20
+		set noimd
+		let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 endif
+
+vmap <silent>sf        <Plug>SQLU_Formatter<CR>
+nmap <silent>scl       <Plug>SQLU_CreateColumnList<CR>
+nmap <silent>scd       <Plug>SQLU_GetColumnDef<CR>
+nmap <silent>scdt      <Plug>SQLU_GetColumnDataType<CR>
+nmap <silent>scp       <Plug>SQLU_CreateProcedure<CR>
+
 
 let g:Tex_MultipleCompileFormats = 'pdf,dvi'
 let generate_tags=1
@@ -157,3 +180,25 @@ set completeopt-=preview
 "let g:ycm_key_invoke_completion = '<C-;>'
 let g:ycm_key_list_select_completion = ['<C-n>','<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>','<Up>']
+let g:rcsv_colorpairs = [
+						\ ['lightgreen',     'lightgreen'],
+						\ ['yellow',    'yellow'],
+						\ ['darkmagenta', 'darkmagenta'],
+						\ ['NONE',        'NONE'],
+						\ ]
+
+" vimwiki 
+map <A-Space> <Plug>VimwikiToggleListItem
+" let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/'}]
+let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/', 'ext': '.markdown', 'syntax': 'markdown'}]
+let g:vimwiki_table_mappings = 0
+
+" Table mappings
+"if g:vimwiki_table_mappings
+"  inoremap <expr> <buffer> <Tab> vimwiki#tbl#kbd_tab()
+"  inoremap <expr> <buffer> <S-Tab> vimwiki#tbl#kbd_shift_tab()
+"endif
+
+" instant markdown
+let g:instant_markdown_autostart = 0	"disable autostart
+map <leader>md :InstantMarkdownPreview<CR>

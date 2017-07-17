@@ -34,7 +34,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 // INFO {{{
 let INFO =
-xml`<plugin name="feedSomeKeys" version="1.9.4"
+xml`<plugin name="feedSomeKeys" version="1.9.5"
           href="http://github.com/vimpr/vimperator-plugins/blob/master/feedSomeKeys_3.js"
           summary="Feed some defined key events into the Web content"
           lang="en-US"
@@ -140,7 +140,7 @@ xml`<plugin name="feedSomeKeys" version="1.9.4"
 :lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
     </ex></code>
   </plugin>
-  <plugin name="feedSomeKeys" version="1.9.3"
+  <plugin name="feedSomeKeys" version="1.9.5"
           href="http://github.com/vimpr/vimperator-plugins/blob/master/feedSomeKeys_3.js"
           summary="Web コンテンツに直接キーイベントを送ります。"
           lang="ja"
@@ -252,7 +252,7 @@ xml`<plugin name="feedSomeKeys" version="1.9.4"
 (function () {
 
   const EVENTS = 'keypress keydown keyup'.split(/\s+/);
-  const EVENTS_WITH_V = EVENTS.concat(['v' + n for each (n in EVENTS)]);
+  const EVENTS_WITH_V = EVENTS.concat(EVENTS.map(n => 'v' + n));
   const IGNORE_URLS = /<ALL>/;
 
   const VKeys = {
@@ -312,12 +312,14 @@ xml`<plugin name="feedSomeKeys" version="1.9.4"
     feeding: false
   };
 
-  function id (v)
-    v;
-
-  function or (list, func){
-    let [head,] = list;
-    return(list.length && func(head) || or(list.slice(1), func));
+  function or (list, func) {
+    return (
+      list.length &&
+      (function () {
+        let [head,] = list;
+        return (func(head) || or(list.slice(1), func));
+      })()
+    );
   }
 
   function getFrames () {
@@ -498,8 +500,7 @@ xml`<plugin name="feedSomeKeys" version="1.9.4"
 
   function fmapCompleter (context, args) {
     context.title = ['name', 'rhs & url'];
-    context.completions = [
-      [
+    context.completions = findMappings({urls: args['-urls'], ignoreUrls: args['-ignoreurls']}).map(map => [
         xml`<span style="font-weight: bold">${map.names[0]}</span>,
         <span>
           <span style="font-weight: bold">${map.feedSomeKeys.rhs}</span>
@@ -510,19 +511,20 @@ xml`<plugin name="feedSomeKeys" version="1.9.4"
           }</span>
         </span>`
       ]
-      for each (map in findMappings({urls: args['-urls'], ignoreUrls: args['-ignoreurls']}))
-    ];
+    );
   }
 
   function urlCompleter ({currentURL}) {
     return function (context, args) {
       let maps = findMappings({all: true});
       let uniq = {};
-      let result = [
-        (uniq[map.matchingUrls] = 1, [map.matchingUrls.source, map.names])
-        for each (map in maps)
-        if (map.matchingUrls && !uniq[map.matchingUrls])
-      ];
+      let result = [];
+      for (let map of maps) {
+        if (map.matchingUrls && !uniq[map.matchingUrls]) {
+          uniq[map.matchingUrls] = 1;
+          result.push([map.matchingUrls.source, map.names]);
+        }
+      }
       if (currentURL) {
         result.unshift(['^' + util.escapeRegex(buffer.URL), 'Current URL']);
         if (content.document.domain)
@@ -533,18 +535,16 @@ xml`<plugin name="feedSomeKeys" version="1.9.4"
   }
 
   function frameCompleter (context, args) {
-    return [
-      [i, frame.document.location]
-      for each ([i, frame] in Iterator(getFrames()))
-    ];
+    return getFrames().map((frame, i) => [i, frame.document.location]);
   }
 
-  const ModeStringsCompleter = [
-    [name, disp + ' mode' + (char ? ' (alias: ' + char + ')' : '')]
-    for ([n, {name, char, disp, extended}] in Iterator(modes._modeMap))
-    if (!extended && /^\D+$/.test(n))
-  ];
-
+  const ModeStringsCompleter = Object.keys(modes._modeMap).filter(function(n) {
+    let {extended} = modes._modeMap[n];
+    return !extended && /^\D+$/.test(n);
+  }).map(function(n) {
+    let {name, char, disp} = modes._modeMap[n];
+    return [name, disp + ' mode' + (char ? ' (alias: ' + char + ')' : '')]
+  });
 
   'fmap fmaps'.split(/\s+/).forEach(function (cmd) {
     let multi = cmd === 'fmaps';
@@ -598,7 +598,7 @@ xml`<plugin name="feedSomeKeys" version="1.9.4"
         }
 
         if (multi) {
-          let s = args['-separator'] || ',' ;
+          let sepStr = s = args['-separator'] || ',';
           let sep = function (v) v.split(s);
           args.literalArg.split(/\s+/).map(String.trim).map(sep).forEach(add);
         } else {
@@ -706,7 +706,7 @@ xml`<plugin name="feedSomeKeys" version="1.9.4"
     true
   );
 
-  plugins.libly.$U.around(
+  liberator.plugins.libly.$U.around(
     mappings,
     'getCandidates',
     function (next, [mode, prefix, patternOrUrl]) {
