@@ -17,8 +17,8 @@ inoremap <C-a> <Ins><C-a><Ins>
 "Zotero Quick Add
 "nmap <C-q> :js ZoteroPane.addItemFromPage();<CR>
 "nmap <S-q> :js Zotero_Browser.scrapeThisPage();<CR>
-nmap <C-S-q> :js ZoteroPane.newNote(false,false,getBrowserSelection(),window.location.href);<CR>
-nmap <C-A-x> :js ZoteroPane.openNoteWindow();<CR>
+"nmap <C-S-q> :js ZoteroPane.newNote(false,false,getBrowserSelection(),window.location.href);<CR>
+"nmap <C-A-x> :js ZoteroPane.openNoteWindow();<CR>
 noremap = +
 "add to instapaper
 nmap <S-q> :ril<CR>
@@ -70,17 +70,3 @@ command noimg set! permissions.default.image=2
 command ysimg set! permissions.default.image=1
 command nojs set! javascript.enabled=false
 command ysjs set! javascript.enabled=true
-
-"google plus
-"let g:gplus_commando_map_next            = "j"
-"let g:gplus_commando_map_prev            = "k"
-"let g:gplus_commando_map_share           = "s"
-"let g:gplus_commando_map_plusone         = "p"
-"let g:gplus_commando_map_comment         = "c"
-"let g:gplus_commando_map_post            = "C"
-"let g:gplus_commando_map_yank            = "y"
-"let g:gplus_commando_map_notification    = "n"
-"let g:gplus_commando_map_submit          = "<C-CR>"
-"let g:gplus_commando_map_cancel          = "<Esc>"
-"let g:gplus_commando_map_unfold          = "e"
-"let g:gplus_commando_map_menu            = "m"
