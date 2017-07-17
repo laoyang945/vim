@@ -9,7 +9,6 @@ set rtp+=~/.vim/bundle/vundle.vim/
 call vundle#begin()
 Plugin 'VundleVim/vundle.vim'
 Plugin 'vim-latex/vim-latex'
-"Plugin 'laoyang945/snipmate.vim'
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
@@ -24,13 +23,8 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vimwiki/vimwiki'
 Plugin 'suan/vim-instant-markdown'
-"Plugin 'yegappan/grep'
-"Plugin 'luochen1990/rainbow'
 Plugin 'vim-scripts/rainbow_csv.vim'
 Plugin 'godlygeek/tabular'
-"Plugin 'dhruvasagar/vim-table-mode'
-"Plugin 'vim-scripts/SQLUtilities'
-"Plugin 'vim-scripts/Align'
 Plugin 'chrisbra/vim-sh-indent'
 
 "if has("win32")||has("win64")
