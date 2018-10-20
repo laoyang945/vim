@@ -26,6 +26,8 @@ Plugin 'suan/vim-instant-markdown'
 Plugin 'vim-scripts/rainbow_csv.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'chrisbra/vim-sh-indent'
+Plugin 'mattn/calendar-vim'
+Plugin 'mpyatishev/vim-sqlformat'
 
 "if has("win32")||has("win64")
 "		Plugin	'file://~/.vim/bundle/YouCompleteMe',{'pinned':1}
@@ -69,6 +71,7 @@ colorscheme desert
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 set printencoding=utf-8
+set cursorcolumn
 
 if has("win32")||has("win64")
 		source $VIMRUNTIME/delmenu.vim
@@ -97,8 +100,6 @@ endfunction
 "autocmd! InsertEnter * set noimdisable
 "
 set number
-
-
 set linebreak
 set nospell
 set clipboard=unnamed "The * register is the default register.
@@ -134,12 +135,18 @@ nmap <F2> :Startify<CR>
 nmap <F3> :NERDTreeToggle<CR>
 nmap <F4> :let @+=expand("%")<CR>
 let mapleader=","
+nmap <Leader>cm :%s/,/\t/g<CR>
+nmap <Leader>c :let @+=expand('%')<CR>
+" for python3 only
+nmap <Leader>js :%!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), ensure_ascii=False, indent=4))"<CR>
 "for plugins
 filetype plugin on
 set shellslash
 set grepprg=grep\ -nH\ $*
 filetype indent on
 set undofile
+
+" vim-latex
 let g:Tex_Flavor='latex'
 let g:Tex_DefaultTargetFormat = 'pdf'
 "au FileType tex :TTarget pdf
@@ -156,43 +163,44 @@ if has("unix")
 		let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 endif
 
-vmap <silent>sf        <Plug>SQLU_Formatter<CR>
-nmap <silent>scl       <Plug>SQLU_CreateColumnList<CR>
-nmap <silent>scd       <Plug>SQLU_GetColumnDef<CR>
-nmap <silent>scdt      <Plug>SQLU_GetColumnDataType<CR>
-nmap <silent>scp       <Plug>SQLU_CreateProcedure<CR>
-
-
 let g:Tex_MultipleCompileFormats = 'pdf,dvi'
 let generate_tags=1
 let g:ctags_statusline=1
 let Tlist_Use_Horiz_Window=0
 let g:Tex_EchoBibFields = 0
-let g:ycm_confirm_extra_conf = 0
+
 let g:rainbow_active=1
 set completeopt-=preview  
+"ycm
+"let g:ycm_confirm_extra_conf = 0
 "let g:ycm_key_invoke_completion = '<C-;>'
-let g:ycm_key_list_select_completion = ['<C-n>','<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>','<Up>']
-let g:rcsv_colorpairs = [
-						\ ['lightgreen',     'lightgreen'],
-						\ ['yellow',    'yellow'],
-						\ ['darkmagenta', 'darkmagenta'],
-						\ ['NONE',        'NONE'],
-						\ ]
+"let g:ycm_key_list_select_completion = ['<C-n>','<Down>']
+"let g:ycm_key_list_previous_completion = ['<C-p>','<Up>']
+"let g:rcsv_colorpairs = [
+"						\ ['lightgreen',     'lightgreen'],
+"						\ ['yellow',    'yellow'],
+"						\ ['darkmagenta', 'darkmagenta'],
+"						\ ['NONE',        'NONE'],
+"						\ ]
 
 " vimwiki 
 map <A-Space> <Plug>VimwikiToggleListItem
+map <Leader>vs :VWS 
 " let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/'}]
-let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/', 'ext': '.markdown', 'syntax': 'markdown'}]
+let g:vimwiki_list = [{'path': '~/Documents/vimwiki/', 'ext': '.markdown', 'syntax': 'markdown'}]
 let g:vimwiki_table_mappings = 0
-
-" Table mappings
-"if g:vimwiki_table_mappings
-"  inoremap <expr> <buffer> <Tab> vimwiki#tbl#kbd_tab()
-"  inoremap <expr> <buffer> <S-Tab> vimwiki#tbl#kbd_shift_tab()
-"endif
+let g:vimwiki_global_ext = 0
 
 " instant markdown
 let g:instant_markdown_autostart = 0	"disable autostart
 map <leader>md :InstantMarkdownPreview<CR>
+
+" startify
+let g:startify_list_order = [ ['Commands'], 'commands',  ['Bookmarks'], 'bookmarks', ['Recent Files'], 'files', ['Current Dir'],'dir']
+let g:startify_files_number = 5
+let g:startify_custom_header = []
+let g:startify_commands = [{'c': 'Calendar'}]
+let g:startify_bookmarks = [ {'d': '~/Documents/vimwiki/diary/'.strftime("%F").'.markdown'}, {'w': '~/Documents/vimwiki/index.markdown'}, {'r': '~/.vimrc'}, {'s': '~/.vim/bundle/vim-snipmate/snippets/'}]
+
+" 
+let g:omni_sql_no_default_maps = 1
